@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 
-function ItemForm(props) {
+function ItemForm({ onItemFormSubmit }) {
+  const [name, setName] = useState("")
+  const [category, setCategory] = useState("Produce")
+
+  function submitHandler(event) {
+    event.preventDefault();
+    console.log("submitting form")
+
+    onItemFormSubmit({
+      id: uuid(),
+      name: name,
+      category: category
+    });
+  }
+
+  function handleCategoryChange(event) {
+    console.log(event.target.value)
+    setCategory(event.target.value);
+  }
+
+  function handleNameChange(event) {
+    console.log(event.target.value)
+    setName(event.target.value)
+  }
+
   return (
-    <form className="NewItem">
+    <form className="NewItem" onSubmit={submitHandler}>
       <label>
         Name:
-        <input type="text" name="name" />
+        <input type="text" name="name" value={name} onChange={handleNameChange}/>
       </label>
 
       <label>
         Category:
-        <select name="category">
+        <select name="category" value={category} onChange={handleCategoryChange}>
           <option value="Produce">Produce</option>
           <option value="Dairy">Dairy</option>
           <option value="Dessert">Dessert</option>
@@ -46,6 +70,4 @@ function addElement(element) {
   setArray([...array, element]);
 }
 The spread operator allows us to copy all the old values of an array into a new array, and then add new elements as well. When you're working with state you never want to mutate state by using methods like .push -- always use non-destructive array methods when working with state!
-
-
 */
